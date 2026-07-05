@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Marry Me? ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+background:linear-gradient(-45deg,#ff758c,#ff7eb3,#ffd3a5,#fd6585);
+background-size:400% 400%;
+animation:bgMove 10s ease infinite;
+}
+
+@keyframes bgMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* Floating Hearts */
+
+.heart{
+position:fixed;
+bottom:-30px;
+font-size:22px;
+color:#ff3d6e;
+animation:floatUp linear infinite;
+pointer-events:none;
+}
+
+@keyframes floatUp{
+0%{
+transform:translateY(0) scale(.8);
+opacity:1;
+}
+100%{
+transform:translateY(-120vh) scale(1.5);
+opacity:0;
+}
+}
+
+.card{
+width:700px;
+max-width:90%;
+background:white;
+padding:45px;
+border-radius:25px;
+text-align:center;
+box-shadow:0 20px 60px rgba(0,0,0,.2);
+position:relative;
+z-index:2;
+}
+
+.card h1{
+font-family:"Great Vibes",cursive;
+font-size:70px;
+color:#ff2d75;
+}
+
+.card h2{
+font-size:38px;
+margin-top:15px;
+color:#444;
+}
+
+.card p{
+margin-top:15px;
+font-size:18px;
+color:#666;
+}
+
+.buttons{
+margin-top:40px;
+height:220px;
+position:relative;
+overflow:hidden;
+}
+
+button{
+padding:15px 40px;
+font-size:22px;
+border:none;
+border-radius:50px;
+cursor:pointer;
+transition:.3s;
+font-weight:bold;
+}
+
+#yes{
+background:#ff2d75;
+color:white;
+position:absolute;
+left:25%;
+top:75px;
+box-shadow:0 10px 25px rgba(255,45,117,.4);
+}
+
+#yes:hover{
+transform:scale(1.1);
+}
+
+#no{
+background:#555;
+color:white;
+position:absolute;
+left:60%;
+top:75px;
+}
+
+.toast{
+position:fixed;
+bottom:-100px;
+left:50%;
+transform:translateX(-50%);
+background:#222;
+color:white;
+padding:15px 35px;
+border-radius:40px;
+font-size:18px;
+transition:.4s;
+z-index:999;
+}
+
+.toast.show{
+bottom:40px;
+}
+
+#success{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(255,255,255,.96);
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:9999;
+text-align:center;
+animation:fade .5s;
+}
+
+#success h1{
+font-size:90px;
+}
+
+#success h2{
+font-size:45px;
+margin-top:15px;
+color:#ff2d75;
+}
+
+#success p{
+font-size:22px;
+margin-top:10px;
+}
+
+@keyframes fade{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+.confetti{
+position:fixed;
+top:-20px;
+width:12px;
+height:12px;
+animation:fall linear infinite;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh) rotate(720deg);
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>❤️</h1>
+
+<h2>Will You Marry Me?</h2>
+
+<p>
+You make every day beautiful.<br>
+Will you be mine forever? 💍
+</p>
+
+<div class="buttons">
+
+<button id="yes">YES </button>
+
+<button id="no">NO </button>
+
+</div>
+
+</div>
+
+<div class="toast" id="toast">
+😂 You can't escape from Spot!
+</div>
+
+<div id="success">
+<h1>💍❤️</h1>
+<h2>Yay!! You Said YES </h2>
+<p>Our forever starts now... ❤️</p>
+</div>
+
+<script>
+
+const no=document.getElementById("no");
+const yes=document.getElementById("yes");
+const toast=document.getElementById("toast");
+const container=document.querySelector(".buttons");
+
+let attempts=0;
+
+function moveButton(){
+
+const maxX=container.clientWidth-no.offsetWidth;
+const maxY=container.clientHeight-no.offsetHeight;
+
+let x=Math.random()*maxX;
+let y=Math.random()*maxY;
+
+no.style.left=x+"px";
+no.style.top=y+"px";
+
+attempts++;
+
+if(attempts==8){
+
+toast.classList.add("show");
+
+setTimeout(()=>{
+
+toast.classList.remove("show");
+
+},2500);
+
+}
+
+}
+
+no.addEventListener("mouseenter",moveButton);
+
+container.addEventListener("mousemove",(e)=>{
+
+const rect=no.getBoundingClientRect();
+
+const dx=e.clientX-(rect.left+rect.width/2);
+const dy=e.clientY-(rect.top+rect.height/2);
+
+const distance=Math.sqrt(dx*dx+dy*dy);
+
+if(distance<90){
+
+moveButton();
+
+}
+
+});
+
+yes.onclick=function(){
+
+document.getElementById("success").style.display="flex";
+
+for(let i=0;i<200;i++){
+
+let c=document.createElement("div");
+
+c.className="confetti";
+
+c.style.left=Math.random()*100+"vw";
+
+c.style.background="hsl("+Math.random()*360+",100%,50%)";
+
+c.style.animationDuration=2+Math.random()*3+"s";
+
+document.body.appendChild(c);
+
+}
+
+}
+
+for(let i=0;i<50;i++){
+
+let h=document.createElement("div");
+
+h.className="heart";
+
+h.innerHTML="❤";
+
+h.style.left=Math.random()*100+"vw";
+
+h.style.animationDuration=4+Math.random()*6+"s";
+
+h.style.fontSize=15+Math.random()*25+"px";
+
+document.body.appendChild(h);
+
+}
+
+</script>
+
+</body>
+</html>
